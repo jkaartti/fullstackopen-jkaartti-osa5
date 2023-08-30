@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,7 +12,17 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [blogs, setBlogs] = useState([])
+  const [message, setMessage] = useState(null)
+  const [isError, setIsError] = useState(false)
   
+  const notify = (message, isError) => {
+    setMessage(message)
+    setIsError(isError)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+  }
+
   // check if user is logged in already
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -32,9 +43,9 @@ const App = () => {
       setUsername('')
       setPassword('')
       blogService.setToken(user.token)
-      console.log('login succesful')
+      //console.log('login succesful')
     } catch (exception) {
-      console.log('wrong credentials')
+      notify('wrong username or password', true)
     }
   }
 
@@ -47,7 +58,7 @@ const App = () => {
   const createBlog = async (event) => {
     event.preventDefault()
 
-    console.log('creating blog')
+    //console.log('creating blog')
     try {
       const newBlog = { title, author, url }
       const response = await blogService.create(newBlog)
@@ -60,10 +71,13 @@ const App = () => {
       }
 
       setBlogs(blogs.concat(savedBlog))
-
       emptyBlogForm()
+      notify(
+        `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
+        false
+      )      
     } catch (exception) {
-      console.log('error creating blog:', exception)
+      notify(`${exception.response.data.error}`, true)
     }
   }
 
@@ -148,6 +162,7 @@ const App = () => {
     return (
       <div>
         <h2>blogs</h2>
+        <Notification message={message} isError={isError}/>
         <div>{user.name} logged in {logoutButton()}</div>
         <h2>create new</h2>
         {createBlogForm()}
@@ -162,6 +177,7 @@ const App = () => {
   return (
     <div>
       <h2>login to application</h2>
+      <Notification message={message} isError={isError}/>
       {!user && loginForm()}
     </div>
   )
