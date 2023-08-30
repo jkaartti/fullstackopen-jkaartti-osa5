@@ -29,6 +29,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -48,30 +49,23 @@ const App = () => {
     }
   }
 
-  const emptyBlogForm = () => {
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
-
   const createBlog = async (newBlog) => {
     try {
       const response = await blogService.create(newBlog)
   
-      const savedBlog = {
-        title: response.title,
-        author: response.author,
-        url: response.url,
-      }
-
-      setBlogs(blogs.concat(savedBlog))
+      setBlogs(blogs.concat(response))
       blogFormRef.current.toggleVisibility()
       notify(
-        `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
+        `a new blog ${response.title} by ${response.author} added`,
         false
       )   
     } catch (exception) {
-      notify(`${exception.response.data.error}`, true)
+      console.log(exception)
+      notify(`${
+        exception.response !== undefined && exception.response.data.error !== undefined
+          ? exception.response.data.error
+          : exception
+      }`, true)
     }
   }
 
