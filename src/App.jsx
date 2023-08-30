@@ -52,11 +52,13 @@ const App = () => {
   const createBlog = async (newBlog) => {
     try {
       const response = await blogService.create(newBlog)
+      const savedBlog = {...response, user: user}
   
-      setBlogs(blogs.concat(response))
+      setBlogs(blogs.concat(savedBlog))
+      console.log(savedBlog)
       blogFormRef.current.toggleVisibility()
       notify(
-        `a new blog ${response.title} by ${response.author} added`,
+        `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
         false
       )   
     } catch (exception) {

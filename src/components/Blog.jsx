@@ -1,5 +1,4 @@
 import { useState } from "react"
-import blogs from "../services/blogs"
 
 const Blog = ({ blog }) => {
   let blogStyle = {
