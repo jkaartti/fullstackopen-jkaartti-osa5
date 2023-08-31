@@ -80,16 +80,9 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( sortBlogs(blogs) )
+      setBlogs( blogs )
     )  
   }, [])
-
-  // sorts blogs by likes
-  const sortBlogs = (blogs) => {
-    return blogs.sort((a, b) => {
-      return b.likes - a.likes
-    })
-  }
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -153,6 +146,7 @@ const App = () => {
         <div>{user.name} logged in {logoutButton()}</div>
         {createBlogForm()}
         {blogs
+          .sort((a, b) => (b.likes - a.likes))
           .map(blog =>
             <Blog
               key={blog.id}
