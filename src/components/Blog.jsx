@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 import blogService from '../services/blogs'
 
 const Blog = ({ blog, addLike, removeBlog }) => {
@@ -13,7 +13,7 @@ const Blog = ({ blog, addLike, removeBlog }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => { setVisible(!visible) }
-  
+
   const visibilityStyle = { display: visible ? '' : 'none' }
   const buttonText = visible ? 'hide' : 'view'
 

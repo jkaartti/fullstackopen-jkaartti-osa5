@@ -13,7 +13,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState(null)
   const [isError, setIsError] = useState(false)
-  
+
   const notify = (message, isError) => {
     setMessage(message)
     setIsError(isError)
@@ -25,7 +25,7 @@ const App = () => {
   // check if user is logged in already
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
-  
+
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -52,15 +52,15 @@ const App = () => {
   const createBlog = async (newBlog) => {
     try {
       const response = await blogService.create(newBlog)
-      const savedBlog = {...response, user: user}
-  
+      const savedBlog = { ...response, user: user }
+
       setBlogs(blogs.concat(savedBlog))
       console.log(savedBlog)
       blogFormRef.current.toggleVisibility()
       notify(
         `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
         false
-      )   
+      )
     } catch (exception) {
       console.log(exception)
       notify(`${
@@ -81,7 +81,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   const loginForm = () => (
@@ -159,11 +159,11 @@ const App = () => {
               addLike={addLike}
               removeBlog={
                 blog.user.name === user.name
-                ? removeBlog
-                : null
+                  ? removeBlog
+                  : null
               }
             />
-        )}
+          )}
       </div>
     )
   }
