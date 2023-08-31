@@ -19,8 +19,8 @@ const Notification = ({ message, isError }) => {
   }
 
   const className = isError
-    ? "error"
-    : "info"
+    ? 'error'
+    : 'info'
 
   return (
     <div className={className} style={notificationStyle}>
