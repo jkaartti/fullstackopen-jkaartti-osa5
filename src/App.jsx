@@ -137,6 +137,11 @@ const App = () => {
     }
   }
 
+  const addLike = async (blog) => {
+    const savedBlog = await blogService.addLike(blog)
+    setBlogs(blogs.map(b => b = b.id !== savedBlog.id ? b : savedBlog))
+  }
+
   // if user is logged in, show the blog list
   if (user) {
     return (
@@ -151,6 +156,7 @@ const App = () => {
             <Blog
               key={blog.id}
               blog={blog}
+              addLike={addLike}
               removeBlog={
                 blog.user.name === user.name
                 ? removeBlog

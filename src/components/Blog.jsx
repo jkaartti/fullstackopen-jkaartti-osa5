@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, removeBlog }) => {
+const Blog = ({ blog, addLike, removeBlog }) => {
   let blogStyle = {
     paddingTop: 7,
     paddingBottom: 8,
@@ -11,21 +11,13 @@ const Blog = ({ blog, removeBlog }) => {
   }
 
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
 
   const toggleVisibility = () => { setVisible(!visible) }
   
   const visibilityStyle = { display: visible ? '' : 'none' }
   const buttonText = visible ? 'hide' : 'view'
 
-  const addLike = async () => {
-    try {
-      await blogService.addLike(blog)
-      setLikes(blog.likes + 1)
-    } catch (exception) {
-      console.log(exception)
-    }
-  }
+  const handleLike = () => { addLike (blog) }
 
   const handleRemove = () => { removeBlog(blog) }
 
@@ -44,7 +36,7 @@ const Blog = ({ blog, removeBlog }) => {
       <button onClick={toggleVisibility}>{buttonText}</button>
       <div style={visibilityStyle}>
         {blog.url}<br/>
-        likes {likes} <button onClick={addLike}>like</button><br/>
+        likes {blog.likes} <button onClick={handleLike}>like</button><br/>
         {blog.user.name}<br/>
         {remove()}
       </div>
