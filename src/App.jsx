@@ -80,9 +80,16 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs( sortBlogs(blogs) )
     )  
   }, [])
+
+  // sorts blogs by likes
+  const sortBlogs = (blogs) => {
+    return blogs.sort((a, b) => {
+      return b.likes - a.likes
+    })
+  }
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
