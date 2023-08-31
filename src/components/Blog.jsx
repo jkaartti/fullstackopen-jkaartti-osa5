@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, addLike, removeBlog }) => {
   let blogStyle = {
@@ -28,6 +28,11 @@ const Blog = ({ blog, addLike, removeBlog }) => {
     return (
       <button onClick={handleRemove}>remove</button>
     )
+  }
+
+  Blog.propTypes = {
+    blog: PropTypes.object.isRequired,
+    addLike: PropTypes.func.isRequired,
   }
 
   return (
