@@ -129,6 +129,21 @@ const App = () => {
     </form>
   )
 
+  const removeBlog = async (blog) => {
+    if (!window.confirm(
+      `Remove blog ${blog.name} by ${blog.author}?`
+    )) {
+      return
+    }
+
+    try {
+      await blogService.remove(blog)
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+    } catch (exception) {
+      notify(exception, true)
+    }
+  }
+
   // if user is logged in, show the blog list
   if (user) {
     return (
@@ -137,8 +152,17 @@ const App = () => {
         <Notification message={message} isError={isError}/>
         <div>{user.name} logged in {logoutButton()}</div>
         {createBlogForm()}
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+        {blogs
+          .map(blog =>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              removeBlog={
+                blog.user.name === user.name
+                ? removeBlog
+                : null
+              }
+            />
         )}
       </div>
     )
