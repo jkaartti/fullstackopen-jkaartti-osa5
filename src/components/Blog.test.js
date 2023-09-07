@@ -56,4 +56,15 @@ describe('<Blog />', () => {
     div = screen.getByText('Test user', { exact: false })
     expect(div).not.toHaveStyle('display: none')
   })
+
+  test('calls the handler function twice, when like button is pressed twice', () => {
+    const viewButton = screen.getByText('view')
+    fireEvent.click(viewButton)
+
+    const likeButton = screen.getByText('like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(addLike.mock.calls).toHaveLength(2)
+  })
 })
