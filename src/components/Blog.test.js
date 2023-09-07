@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import Blog from './Blog'
 import userEvent from '@testing-library/user-event'
@@ -43,9 +43,10 @@ describe('<Blog />', () => {
     expect(div).toHaveStyle('display: none')
   })
 
-  test('renders also url, likes and the user\'s name when the view button is pressed', () => {
+  test('renders also url, likes and the user\'s name when the view button is pressed', async () => {
     const viewButton = screen.getByText('view')
-    fireEvent.click(viewButton)
+    const user = userEvent.setup()
+    await user.click(viewButton)
 
     let div = screen.getByText('www.url.com', { exact: false })
     expect(div).not.toHaveStyle('display: none')
@@ -57,13 +58,14 @@ describe('<Blog />', () => {
     expect(div).not.toHaveStyle('display: none')
   })
 
-  test('calls the handler function twice, when like button is pressed twice', () => {
+  test('calls the handler function twice, when like button is pressed twice', async () => {
     const viewButton = screen.getByText('view')
-    fireEvent.click(viewButton)
+    const user = userEvent.setup()
+    await user.click(viewButton)
 
     const likeButton = screen.getByText('like')
-    fireEvent.click(likeButton)
-    fireEvent.click(likeButton)
+    await user.click(likeButton)
+    await   user.click(likeButton)
 
     expect(addLike.mock.calls).toHaveLength(2)
   })
