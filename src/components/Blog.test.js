@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import Blog from './Blog'
 import userEvent from '@testing-library/user-event'
@@ -41,5 +41,19 @@ describe('<Blog />', () => {
 
     div = screen.getByText('Test user', { exact: false })
     expect(div).toHaveStyle('display: none')
+  })
+
+  test('renders also url, likes and the user\'s name when the view button is pressed', () => {
+    const viewButton = screen.getByText('view')
+    fireEvent.click(viewButton)
+
+    let div = screen.getByText('www.url.com', { exact: false })
+    expect(div).not.toHaveStyle('display: none')
+
+    div = screen.getByText('likes', { exact: false })
+    expect(div).not.toHaveStyle('display: none')
+
+    div = screen.getByText('Test user', { exact: false })
+    expect(div).not.toHaveStyle('display: none')
   })
 })
