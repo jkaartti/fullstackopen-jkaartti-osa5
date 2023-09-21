@@ -17,7 +17,7 @@ const Blog = ({ blog, addLike, removeBlog }) => {
   const visibilityStyle = { display: visible ? '' : 'none' }
   const buttonText = visible ? 'hide' : 'view'
 
-  const handleLike = () => { addLike (blog) }
+  const handleLike = () => { addLike(blog) }
 
   const handleRemove = () => { removeBlog(blog) }
 
@@ -36,7 +36,7 @@ const Blog = ({ blog, addLike, removeBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={toggleVisibility}>{buttonText}</button>
       <div style={visibilityStyle}>

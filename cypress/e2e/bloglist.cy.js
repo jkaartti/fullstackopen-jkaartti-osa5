@@ -86,5 +86,32 @@ describe('Blog app', function() {
       cy.contains('view').click()
       cy.should('not.contain', 'remove')
     })
+
+    it.only('the blogs are ordered by likes', function() {
+      cy.createBlog({
+        title: 'Second most likes',
+        author: 'Some Author',
+        url: 'www.url.com'
+      })
+      cy.createBlog({
+        title: 'Most likes',
+        author: 'Some Author',
+        url: 'www.url.com'
+      })
+
+      cy.get('.blog').eq(2).contains('Most likes').as('mostLikes')
+      cy.get('@mostLikes').contains('view').click()
+      cy.get('@mostLikes').contains('like').click()
+      cy.get('.blog').eq(0).contains('likes 1')
+      cy.get('.blog').eq(0).contains('like').click()
+
+      cy.get('.blog').eq(2).contains('Second most likes').as('secondMostLikes')
+      cy.get('@secondMostLikes').contains('view').click()
+      cy.get('@secondMostLikes').contains('like').click()
+
+      cy.get('.blog').eq(0).should('contain', 'Most likes')
+      cy.get('.blog').eq(1).should('contain', 'Second most likes')
+      cy.get('.blog').eq(2).should('contain', 'Initial Blog')
+    })
   })
 })
