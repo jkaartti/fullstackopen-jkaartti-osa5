@@ -64,10 +64,27 @@ describe('Blog app', function() {
       cy.contains('likes 1')
     })
 
-    it.only('a blog can be removed by the user who created it', function() {
+    it('a blog can be removed by the user who created it', function() {
       cy.contains('view').click()
       cy.contains('remove').click()
       cy.should('not.contain', 'Inital Blog')
+    })
+
+    it('only the user who cretad the blog sees the remove button', function() {
+      cy.contains('view').click()
+      cy.contains('remove')
+      cy.contains('logout').click()
+
+      const user = {
+        name: 'Other User',
+        username: 'otheruser',
+        password: 'otherpassword'
+      }
+      cy.request('POST', `${Cypress.env('BACKEND')}/users/`, user)
+      cy.login({ username: 'otheruser', password: 'otherpassword' })
+
+      cy.contains('view').click()
+      cy.should('not.contain', 'remove')
     })
   })
 })
