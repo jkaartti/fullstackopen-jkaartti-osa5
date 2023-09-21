@@ -57,11 +57,17 @@ describe('Blog app', function() {
       cy.contains('Test Title Test Author')
     })
 
-    it.only('a blog can be liked', function() {
+    it('a blog can be liked', function() {
       cy.contains('view').click()
       cy.contains('likes 0')
       cy.contains('like').click()
       cy.contains('likes 1')
+    })
+
+    it.only('a blog can be removed by the user who created it', function() {
+      cy.contains('view').click()
+      cy.contains('remove').click()
+      cy.should('not.contain', 'Inital Blog')
     })
   })
 })
